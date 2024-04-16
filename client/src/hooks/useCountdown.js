@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const useCountdown = (seconds) => {
-  const [timeLeft, setTimeLeft] = useState(seconds);
+const useCountdown = (initialSeconds) => {
+  const [timeLeft, setTimeLeft] = useState(initialSeconds);
   const intervalRef = useRef(null);
   const hasTimerEnded = timeLeft <= 0;
   const isRunning = intervalRef.current != null;
@@ -14,13 +14,16 @@ const useCountdown = (seconds) => {
     }
   }, [setTimeLeft, hasTimerEnded, isRunning]);
 
-  const resetCountdown = useCallback(() => {
+  const resetCountdown = useCallback((seconds) => {
     clearInterval(intervalRef.current);
     intervalRef.current = null;
     setTimeLeft(seconds);
-  }, [seconds]);
+  }, []);
 
-  // when the countdown reaches 0, clear the countdown interval
+  useEffect(() => {
+    resetCountdown(initialSeconds);
+  }, [initialSeconds, resetCountdown]);
+
   useEffect(() => {
     if (hasTimerEnded) {
       clearInterval(intervalRef.current);
@@ -28,7 +31,6 @@ const useCountdown = (seconds) => {
     }
   }, [hasTimerEnded]);
 
-  // clear interval when component unmounts
   useEffect(() => {
     return () => clearInterval(intervalRef.current);
   }, []);
@@ -37,4 +39,3 @@ const useCountdown = (seconds) => {
 };
 
 export default useCountdown;
-

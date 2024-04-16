@@ -1,14 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import { countErrors, debug } from "../utils/helpers";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
 import useCountdown from "./useCountdown";
+import { DurationContext } from "../components/DurationContext";
+
 
 const NUMBER_OF_WORDS = 17;
-const COUNTDOWN_SECONDS = 30;
+
+
 
 const useEngine = () => {
+
+  const { duration } = useContext(DurationContext);
+  const COUNTDOWN_SECONDS = duration || 30;
+
+
   const [state, setState] = useState("start");
+  
   const { timeLeft, startCountdown, resetCountdown } = useCountdown(COUNTDOWN_SECONDS);
   const { words, updateWords } = useWords(NUMBER_OF_WORDS);
   const { cursor, typed, clearTyped, totalTyped, resetTotalTyped } = useTypings(
@@ -21,14 +30,14 @@ const useEngine = () => {
 
   const restart = useCallback(() => {
     debug("restarting...");
-    resetCountdown();
-    resetTotalTyped();
+    resetCountdown(duration || 30);
     setState("start");
     setErrors(0);
     updateWords();
     clearTyped();
-  }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
-
+  }, [clearTyped, updateWords, resetCountdown, resetTotalTyped, duration]);
+  
+  
   const sumErrors = useCallback(() => {
     debug(`cursor: ${cursor} - words.length: ${words.length}`);
     const wordsReached = words.substring(0, Math.min(cursor, words.length));

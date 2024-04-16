@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 
 
 const generateWords = (count) => {
-  return faker.random.words(count).toLowerCase();
+  return faker.word.sample(count).toLowerCase();
 };
 
 const useWords = (count) => {
