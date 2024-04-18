@@ -4,22 +4,23 @@ import useTypings from "./useTypings";
 import useWords from "./useWords";
 import useCountdown from "./useCountdown";
 import { DurationContext } from "../components/DurationContext";
-
+import { ModeContext } from "../components/ModeContext";
+import axios from "axios";
 
 const NUMBER_OF_WORDS = 17;
-
-
 
 const useEngine = () => {
 
   const { duration } = useContext(DurationContext);
   const COUNTDOWN_SECONDS = duration || 30;
 
+  const { mode } = useContext(ModeContext);
+  const testMode = mode || "Paragraph";
 
   const [state, setState] = useState("start");
   
   const { timeLeft, startCountdown, resetCountdown } = useCountdown(COUNTDOWN_SECONDS);
-  const { words, updateWords } = useWords(NUMBER_OF_WORDS);
+  const { words, updateWords } = useWords(NUMBER_OF_WORDS, testMode);
   const { cursor, typed, clearTyped, totalTyped, resetTotalTyped } = useTypings(
     state !== "finish"
   );
@@ -35,8 +36,7 @@ const useEngine = () => {
     setErrors(0);
     updateWords();
     clearTyped();
-  }, [clearTyped, updateWords, resetCountdown, resetTotalTyped, duration]);
-  
+  }, [clearTyped, updateWords, resetCountdown, resetTotalTyped, duration, testMode]);
   
   const sumErrors = useCallback(() => {
     debug(`cursor: ${cursor} - words.length: ${words.length}`);
@@ -44,7 +44,18 @@ const useEngine = () => {
     setErrors((prevErrors) => prevErrors + countErrors(typed, wordsReached));
   }, [typed, words, cursor]);
 
-  // as soon the user starts typing the first letter, we start
+  // send data to server
+  const sendResultsToServer = async (resultsData) => {
+    console.log(resultsData);
+    try {
+      const response = await axios.post('http://localhost:5000/results/', resultsData);
+      console.log('Results sent to server successfully');
+    } catch (error) {
+      console.error('Error sending results to server:', error.message);
+    }
+  };
+
+  // as soon as the user starts typing the first letter, we start
   useEffect(() => {
     if (isStarting) {
       setState("run");
@@ -58,13 +69,32 @@ const useEngine = () => {
       debug("time is up...");
       setState("finish");
       sumErrors();
-    }
-  }, [timeLeft, state, sumErrors]);
 
-  /**
-   * when the current words are all filled up,
-   * we generate and show another set of words
-   */
+      let total = totalTyped - errors;
+
+      let cpms = 0;
+
+    
+      if(duration === 15){
+        cpms = (total - errors)*4;
+      }else if(duration === 30){
+        cpms = (total - errors)*2;
+      }
+      else{
+        cpms = (total - errors);
+      }
+      // Send results to server here
+      sendResultsToServer({
+        userId: localStorage.getItem('userId'), 
+        typed: totalTyped,
+        accuracy: ((totalTyped - errors) / totalTyped),
+        cpm: cpms,
+        error: errors
+      });
+    }
+  }, [timeLeft, state, sumErrors, typed, totalTyped, errors, duration]);
+
+  // when the current words are all filled up, we generate and show another set of words
   useEffect(() => {
     if (areWordsFinished) {
       debug("words are finished...");

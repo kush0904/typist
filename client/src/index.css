@@ -4,11 +4,15 @@
 
 @layer base{
   body{
-    @apply min-h-screen bg-black grid place-items-center font-mono tracking-wider px-4;
+    @apply min-h-screen bg-black grid font-mono tracking-wider;
   }
+
 }
 
+
+
 .blinking {
+  color:red;
   animation: blink 1s infinite reverse;
   -webkit-animation: blink 1s infinite reverse;
 }
@@ -18,6 +22,6 @@
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    opacity: 0.5;
   }
 }

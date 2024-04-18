@@ -17,7 +17,9 @@ const DurationSelect = ({ disabled }) => {
           key={option}
           onClick={() => handleDurationChange(option)}
           disabled={disabled}
-          className={`px-4 py-2 rounded ${duration === option ? 'bg-black text-white' : 'bg-white text-black'} border border-gray-400 hover:border-gray-500 focus:outline-none focus:shadow-outline ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          // className={`px-4 py-2 rounded ${duration === option ? 'bg-black text-white' : 'bg-white text-black'} border border-gray-400 hover:border-gray-500 focus:outline-none focus:shadow-outline ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`px-4 py-2 rounded ${duration === option ? 'text-white' : 'text-zinc-600'} focus:outline-none focus:shadow-outline ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+
         >
           {option} seconds
         </button>

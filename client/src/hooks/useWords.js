@@ -1,17 +1,26 @@
+import { useCallback, useState, useEffect } from "react";
 import { faker } from "@faker-js/faker";
-import { useCallback, useState } from "react";
 
-
-const generateWords = (count) => {
-  return faker.word.sample(count).toLowerCase();
+const generateWords = (count, mode) => {
+  if (mode === 'Paragraph') {
+    return faker.random.words(count).toLowerCase();
+  } else if (mode === 'Words') {  
+    return faker.random.word(count).toLowerCase();
+  } else {
+    return faker.lorem.words(count).toLowerCase();
+  }
 };
 
-const useWords = (count) => {
-  const [words, setWords] = useState(generateWords(count));
+const useWords = (count, mode) => {
+  const [words, setWords] = useState("");
+
+  useEffect(() => {
+    setWords(generateWords(count, mode));
+  }, [count, mode]);
 
   const updateWords = useCallback(() => {
-    setWords(generateWords(count));
-  }, [count]);
+    setWords(generateWords(count, mode));
+  }, [count, mode]);
 
   return { words, updateWords };
 };
