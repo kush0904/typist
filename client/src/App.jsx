@@ -9,31 +9,36 @@ import Register from "./auth/register";
 import Header from "./auth/header";
 import { AuthProvider } from "./contexts/authContext";
 import ShowDetailedResults from "./components/ShowDetailedResults";
+import {NextUIProvider} from "@nextui-org/react";
+import BackGround from "./components/BackGround";
+import Particles from "./components/Particles";
 
 const App = () => {
+
+
   return (
+    <NextUIProvider>
+
     <AuthProvider>
       <Router>
-        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
-          {/* Change the route to "/results/:userId" */}
           <Route path="/results/:userId" element={<ShowDetailedResults />} />
         </Routes>
       </Router>
     </AuthProvider>
+    </NextUIProvider>
   );
 };
 
 const Home = () => (
   <>
-    <Navbar />
     <DurationProvider>
       <ModeProvider>
-        <MainPage />
+        <BackGround />
       </ModeProvider>
     </DurationProvider>
   </>

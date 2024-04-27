@@ -23,7 +23,7 @@ router.get('/', (req,res) => {
 router.get('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
-        const results = await Results.find({ userId }); 
+        const results = await Results.find({ userId }).sort({ createdAt: -1 }); // Sorting by createdAt field in descending order
         if (!results || results.length === 0) {
             return res.status(404).json({ message: 'Results not found' });
         }
@@ -37,6 +37,7 @@ router.get('/:userId', async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 });
+
 
 
 // get results by id

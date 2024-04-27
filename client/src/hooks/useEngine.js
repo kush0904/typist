@@ -7,7 +7,7 @@ import { DurationContext } from "../components/DurationContext";
 import { ModeContext } from "../components/ModeContext";
 import axios from "axios";
 
-const NUMBER_OF_WORDS = 17;
+const NUMBER_OF_WORDS = 10;
 
 const useEngine = () => {
 

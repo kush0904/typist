@@ -1,3 +1,4 @@
+import './Results.css';
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
@@ -23,8 +24,6 @@ const Results = ({
 
   const userId = localStorage.getItem("userId");
 
-  console.log(duration);
-
   if (duration === 15) {
     cpm = (total - errors) * 4;
   } else if (duration === 30) {
@@ -34,75 +33,100 @@ const Results = ({
   }
 
   return (
-    <motion.ul
+    <motion.div
       initial={initial}
       animate={animate}
-      className={`flex flex-col items-center text-primary-400 space-y-3 ${className}`}
+      className={`flex flex-col items-center text-white space-y-3 ${className}`}
     >
-      <motion.li
+      <motion.div
         initial={initial}
         animate={animate}
-        transition={{ duration: 0.3 }}
-        className="text-xl font-semibold"
+        transition={{
+          ease: "linear",
+          duration: 2,
+          x: { duration: 1 },
+          delay: 0.5
+        }}
+        className="glow"
       >
-        Results
-      </motion.li>
-      <motion.li
+        Accuracy:
+        <span>{formatPercentage(accuracyPercentage)}</span>
+      </motion.div>
+      <motion.div
         initial={initial}
         animate={animate}
-        transition={{ duration: 0.3, delay: 0.5 }}
+        transition={{
+          ease: "linear",
+          duration: 2,
+          x: { duration: 1 },
+          delay: 1
+        }}
+        className="glow"
       >
-        Accuracy: {formatPercentage(accuracyPercentage)}
-      </motion.li>
-      <motion.li
+        Errors:
+        <span>{errors}</span>
+      </motion.div>
+      <motion.div
         initial={initial}
         animate={animate}
-        transition={{ duration: 0.3, delay: 1 }}
-        className="text-red-500"
+        transition={{
+          ease: "linear",
+          duration: 2,
+          x: { duration: 1 },
+          delay: 1.5
+        }}
+        className="glow"
       >
-        Errors: {errors}
-      </motion.li>
-      <motion.li
+        Typed:
+        <span>{total}</span>
+      </motion.div>
+      <motion.div
         initial={initial}
         animate={animate}
-        transition={{ duration: 0.3, delay: 1.4 }}
+        transition={{
+          ease: "linear",
+          duration: 2,
+          x: { duration: 1 },
+          delay: 2
+        }}
+        className="glow"
       >
-        Typed: {total}
-      </motion.li>
-      <motion.li
-        initial={initial}
-        animate={animate}
-        transition={{ duration: 0.3, delay: 1.8 }}
-      >
-        CPM: {cpm}
-      </motion.li>
+        CPM:
+        <span>{cpm}</span>
+      </motion.div>
 
       {userId ? (
-        <motion.li
+        <motion.div
           initial={initial}
           animate={animate}
-          transition={{ duration: 0.3, delay: 1.8 }}
+          transition={{
+            ease: "linear",
+            duration: 2,
+            x: { duration: 1 },
+            delay: 2.5
+          }}
+          className="text-sm text-center glow"
         >
-          <div className="text-sm text-center text-white">
-            Show Detailed Results: {"   "}
-            <Link to={`/results/${userId}`} className="text-center text-sm hover:underline font-bold">
-              Continue
-            </Link>
-          </div>
-        </motion.li>
+          <Link to={`/results/${userId}`} className="hover:underline font-bold">
+            Show Detailed Results
+          </Link>
+        </motion.div>
       ) : (
-        <motion.li
+        <motion.div
           initial={initial}
           animate={animate}
-          transition={{ duration: 0.3, delay: 1.8 }}
+          transition={{
+            ease: "linear",
+            duration: 2,
+            x: { duration: 1 },
+            delay: 2.5
+          }}
+          className="text-sm text-center opacity-50 glow"
         >
-          <div className="text-sm text-center text-white opacity-50">
-            Show Detailed Results: {"   "}
-            <span className="text-center text-sm font-bold">Continue</span>
-          </div>
-        </motion.li>
+          Show Detailed Results
+        </motion.div>
       )}
-    </motion.ul>
+    </motion.div>
   );
 };
 

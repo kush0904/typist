@@ -17,7 +17,7 @@ const MainPage = () => {
 
 
   return (
-    <div className="grid place-items-center max-h-screen bg-black font-mono tracking-wider p-10">
+<div className="grid place-items-center max-h-screen font-mono tracking-wider p-10" style={{ backdropFilter: "blur(3px)" }}>
       <DurationSelect disabled={state !== "start"} />
       <ModeSelect disabled={state !== "start"} />
       <CountdownTimer timeLeft={timeLeft} />

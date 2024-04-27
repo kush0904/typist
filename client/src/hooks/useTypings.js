@@ -36,10 +36,8 @@ const useTypings = (enabled) => {
     totalTyped.current = 0;
   }, []);
 
-  // attach the keydown event listener to record keystrokes
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
-    // Remove event listeners on cleanup
     return () => {
       window.removeEventListener("keydown", keydownHandler);
     };

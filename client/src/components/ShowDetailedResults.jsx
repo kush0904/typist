@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import NavBar from './NavBar/Navbar';
 
 export default function ShowDetailedResults() {
     const [data, setData] = useState([]);
@@ -10,8 +11,14 @@ export default function ShowDetailedResults() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/results/${userId}`);
-                console.log(response.data); // Check the response data structure
-                setData(response.data.data); // Set response.data.data instead of response.data
+                console.log(response.data);
+
+                const modifiedData = response.data.data.map(item => ({
+                    ...item,
+                    time: new Date(item.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    date: new Date(item.createdAt).toLocaleDateString(),
+                }));
+                setData(modifiedData);
             } catch (error) {
                 console.error(error);
             }
@@ -21,35 +28,53 @@ export default function ShowDetailedResults() {
     }, [userId]);   
 
     return (
-        <div>
-            <h1>Results</h1>
+        <>
+        <NavBar />
+        <div className="bg-black min-h-screen p-8">
+
+        <div className="flex justify-between items-center">
+        <h1 className="text-white text-3xl font-bold">Results</h1>
+        <div className="flex">
+            <Link to="/" className="text-white text-lg">Back to Home</Link>
+        </div>
+    </div>
 
             {data.length > 0 ? (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Accuracy</th>
-                            <th>CPM</th>
-                            <th>Errors</th>
-                            <th>Typed</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((result, index) => (
-                            <tr key={index}>
-                                <td>{result.accuracy}</td>
-                                <td>{result.cpm}</td>
-                                <td>{result.error}</td>
-                                <td>{result.typed}</td>
-                                <td>{result.createdAt}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="grid gap-6">
+                    {data.map((result, index) => (
+                        <div key={index} className="bg-gray-900 rounded-lg p-6">
+                            <div className="flex flex-col">
+                                <div className="bg-gray-800 text-white text-lg font-bold rounded-md py-2 px-4 mb-2">
+                                    <span className="font-bold mr-6">{result.date}</span>
+                                    <span className="font-bold mr-3">{result.time}</span> 
+                                </div>
+                                <div className="flex text-white text-lg mb-2">
+                                    <div className="w-1/4 flex flex-col items-center pr-2 border-r border-gray-700">
+                                        <span className="font-bold mb-2">Accuracy</span>
+                                        <div className='text-green-500'>{(result.accuracy.toFixed(2))*100}%</div>
+                                    </div>
+                                    <div className="w-1/4 flex flex-col items-center pr-2 border-r border-gray-700">
+                                        <span className="font-bold mb-2">CPM</span>
+                                        <div>{result.cpm}</div>
+                                    </div>
+                                    <div className="w-1/4 flex flex-col items-center pr-2 border-r border-gray-700">
+                                        <span className="font-bold mb-2">Errors</span>
+                                        <div className='text-red-400'>{result.error}</div>
+                                    </div>
+                                    <div className="w-1/4 flex flex-col items-center">
+                                        <span className="font-bold mb-2">Typed</span>
+                                        <div>{result.typed}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             ) : (
-                <p>Loading...</p>
+                <p className="text-white text-lg">Loading...</p>
             )}
         </div>
+
+        </>
     );
 }
