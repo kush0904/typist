@@ -3,6 +3,7 @@ const cred = require('./config/config');
 const mongoose = require('mongoose');
 const Results = require('./models/results');
 const cors = require('cors');
+const { config } = require('dotenv');
 
 const resultsRoute = require('./routes/resultsRoute');
 
@@ -12,10 +13,14 @@ const MongoDBURL = cred.MongoDBURL;
 
 const app = express();
 app.use(cors());
-
+config();
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
+
+
+
+
 
 app.use('/results', resultsRoute);
 

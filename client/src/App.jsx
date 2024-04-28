@@ -12,6 +12,7 @@ import ShowDetailedResults from "./components/ShowDetailedResults";
 import {NextUIProvider} from "@nextui-org/react";
 import BackGround from "./components/BackGround";
 import Particles from "./components/Particles";
+import Loader from "./components/Loader";
 
 const App = () => {
 

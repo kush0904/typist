@@ -1,7 +1,8 @@
 import { Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar/Navbar";
+import Loader from "./Loader";
 
 import {
   useMotionTemplate,
@@ -11,7 +12,7 @@ import {
 } from "framer-motion";
 import MainPage from "./MainPage";
 
-const COLORS_TOP = ["#1E67C6", "#CE84CF", "#DD335C","#13FFAA"];
+const COLORS_TOP = ["#1E67C6", "#CE84CF", "#a31a3b","#13FFAA"];
 
 const BackGround = () => {
   const color = useMotionValue(COLORS_TOP[0]);
@@ -25,12 +26,24 @@ const BackGround = () => {
     });
   }, []);
 
+  const [showLoader, setShowLoader] = useState(true); 
+
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
   const border = useMotionTemplate`1px solid ${color}`;
   const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
 
+
+  useEffect(() => {
+    setShowLoader(false); 
+}, []); 
+
   return (
-    <motion.section style={{
+
+    <>
+      {showLoader ? ( 
+                <Loader />
+            ) : (
+              <motion.section style={{
       backgroundImage,
     }}
     className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
@@ -52,6 +65,8 @@ const BackGround = () => {
             </Canvas>
         </div>
     </motion.section>
+            )}
+    </>
   );
 };
 

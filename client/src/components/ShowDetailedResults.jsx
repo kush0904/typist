@@ -2,10 +2,15 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from './NavBar/Navbar';
+import Loader from './Loader';
+import { Drawer } from './Drawer';
 
 export default function ShowDetailedResults() {
     const [data, setData] = useState([]);
     const { userId } = useParams();
+    const [showLoader, setShowLoader] = useState(true);
+
+   
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,19 +32,31 @@ export default function ShowDetailedResults() {
         fetchData();
     }, [userId]);   
 
+     useEffect(() => {
+        setShowLoader(false); 
+    }, []); 
+
     return (
         <>
-        <NavBar />
-        <div className="bg-black min-h-screen p-8">
+        {showLoader ? ( 
+                <Loader />
+            ) : (
 
-        <div className="flex justify-between items-center">
-        <h1 className="text-white text-3xl font-bold">Results</h1>
-        <div className="flex">
-            <Link to="/" className="text-white text-lg">Back to Home</Link>
-        </div>
-    </div>
+
+        <>
+        <NavBar />
+        <div className="p-8">
+
+            <div className="flex justify-between items-center">
+                <h1 className="text-white text-3xl font-bold">Results</h1>
+                <div className="flex">
+                    <Link to="/" className="text-white text-lg">Back to Home</Link>
+                </div>
+            </div>
 
             {data.length > 0 ? (
+
+                
                 <div className="grid gap-6">
                     {data.map((result, index) => (
                         <div key={index} className="bg-gray-900 rounded-lg p-6">
@@ -71,10 +88,13 @@ export default function ShowDetailedResults() {
                     ))}
                 </div>
             ) : (
-                <p className="text-white text-lg">Loading...</p>
+                <div className='h-full mt-8'>
+                <Drawer />
+                </div>
             )}
         </div>
-
+        </>
+        )};
         </>
     );
 }
