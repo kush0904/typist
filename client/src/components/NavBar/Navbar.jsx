@@ -7,6 +7,8 @@ import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/authContext';
 import { doSignOut } from '../../firebase/auth'
+import { IoGameControllerSharp } from "react-icons/io5";
+
 
 const NavBar = () => {
     const [isActive, setIsActive] = useState(false);
@@ -74,8 +76,20 @@ const NavBar = () => {
                 </div>
             )}
 
+            <Link to="/game" className='mr-2'>
+            <div>
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.985 }}
+                                    className="group relative flex w-fit items-center"
+                                >
+                                <IoGameControllerSharp  className="transition-transform group-hover:scale-x-20 text-2xl group-active:scale-x-40 ml-2" />
+                                </motion.button>
+                            </div>
+            </Link>
+
             <Link to={`/results/${localStorage.getItem("userId")}`} onClick={handleClick}>
-                <div className="block relative mr-3">
+                <div className="block relative mr-3 ">
                     <button type="button" className={`inline-block px-1 py-1 rounded-full relative ${isActive ? 'bg-white text-black' : ''}`}>
                         <div className="flex items-center">
                             <div>

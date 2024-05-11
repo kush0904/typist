@@ -4,6 +4,8 @@ import axios from 'axios';
 import NavBar from './NavBar/Navbar';
 import Loader from './Loader';
 import { Drawer } from './Drawer';
+import { FaHome } from "react-icons/fa";
+
 
 export default function ShowDetailedResults() {
     const [data, setData] = useState([]);
@@ -47,12 +49,12 @@ export default function ShowDetailedResults() {
         <NavBar />
         <div className="p-8">
 
-            <div className="flex justify-between items-center">
-                <h1 className="text-white text-3xl font-bold">Results</h1>
-                <div className="flex">
-                    <Link to="/" className="text-white text-lg">Back to Home</Link>
-                </div>
-            </div>
+        <div className="flex justify-between items-center">
+    <h1 className="text-white text-3xl font-bold">Results</h1>
+    <div className="flex items-center"> 
+        <Link to="/" className="text-white text-lg flex items-center">Back to Home <FaHome  className='mx-4'/></Link>
+    </div>
+</div>
 
             {data.length > 0 ? (
 

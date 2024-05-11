@@ -7,7 +7,6 @@ const { config } = require('dotenv');
 
 const resultsRoute = require('./routes/resultsRoute');
 
-
 const port = cred.PORT;
 const MongoDBURL = cred.MongoDBURL;
 
@@ -17,9 +16,6 @@ config();
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
-
-
-
 
 
 app.use('/results', resultsRoute);

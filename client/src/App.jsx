@@ -13,6 +13,10 @@ import {NextUIProvider} from "@nextui-org/react";
 import BackGround from "./components/BackGround";
 import Particles from "./components/Particles";
 import Loader from "./components/Loader";
+import FallingWords from "./components/FallingWords";
+import TrippyScroll from "./components/TrippyScroll";
+import StarsCanvas from "./components/StarCanvas";
+
 
 const App = () => {
 
@@ -27,6 +31,13 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+
+
+          <Route path="/game" element = {<FallingWords />} />
+          <Route path="/scroll" element = {<TrippyScroll />} />
+          <Route path="/star" element = {<StarsCanvas />} />
+
+
           <Route path="/results/:userId" element={<ShowDetailedResults />} />
         </Routes>
       </Router>

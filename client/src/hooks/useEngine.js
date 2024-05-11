@@ -9,7 +9,10 @@ import axios from "axios";
 
 const NUMBER_OF_WORDS = 10;
 
+
 const useEngine = () => {
+
+  const userId = localStorage.getItem('userId');
 
   const { duration } = useContext(DurationContext);
   const COUNTDOWN_SECONDS = duration || 30;
@@ -45,15 +48,23 @@ const useEngine = () => {
   }, [typed, words, cursor]);
 
   // send data to server
-  const sendResultsToServer = async (resultsData) => {
-    console.log(resultsData);
-    try {
-      const response = await axios.post('http://localhost:5000/results/', resultsData);
-      console.log('Results sent to server successfully');
-    } catch (error) {
-      console.error('Error sending results to server:', error.message);
-    }
-  };
+
+
+const sendResultsToServer = async (resultsData) => {
+  if (!userId) {
+    console.error('User is not logged in. Results cannot be sent to server.');
+    return;
+  }
+
+  console.log(resultsData);
+  try {
+    const response = await axios.post('http://localhost:5000/results/', resultsData);
+    console.log('Results sent to server successfully');
+  } catch (error) {
+    console.error('Error sending results to server:', error.message);
+  }
+};
+
 
   // as soon as the user starts typing the first letter, we start
   useEffect(() => {
