@@ -70,15 +70,9 @@ const NavBar = () => {
                 </a>
             </div>
 
-            {!isMobile && (
-                <div className="flex-grow text-center">
-                    <div className="py-2 px-3 rounded-full hidden md:block">
-                        <a href="#" className="text-white">Become a host</a>
-                    </div>
-                </div>
-            )}
 
 
+            <div className='flex items-center'>
             <Link to="/keys" className='mr-2'>
             <div>
                                 <motion.button
@@ -159,6 +153,7 @@ const NavBar = () => {
                         </motion.div>
                     )}
                 </div>
+            </div>
             </div>
         </nav>
     );

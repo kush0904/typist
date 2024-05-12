@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useEffect} from "react";
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import Navbar from "./components/NavBar/Navbar";
@@ -20,10 +21,26 @@ import { DetailedAccounts } from "./components/DetailedAccount";
 import Keyboard from "./components/Keyboard";
 
 import WithKeyBoard from "./components/WithKeyBoard";
+import { Contact } from "./components/Contact";
+import Beams from "./components/Beams";
 
 
 const App = () => {
 
+
+  useEffect(() => {
+    const handleSpacebarScroll = (e) => {
+      if (e.keyCode === 32 && e.target === document.body) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("keydown", handleSpacebarScroll);
+
+    return () => {
+      window.removeEventListener("keydown", handleSpacebarScroll);
+    };
+  }, []); 
 
   return (
     <NextUIProvider>
@@ -43,6 +60,11 @@ const App = () => {
           <Route path="/keys" element = {<KeyboardMode />} />
 
           <Route path="/star" element = {<StarsCanvas />} />
+          <Route path="/contact" element = {<Contact />} />
+          <Route path="/beams" element = {<Beams />} />
+
+
+
 
 
           <Route path="/results/:userId" element={<ShowDetailedResults />} />
@@ -69,6 +91,8 @@ const Home = () => (
     <DurationProvider>
       <ModeProvider>
         <BackGround />
+        <Contact />
+
       </ModeProvider>
     </DurationProvider>
   </>
