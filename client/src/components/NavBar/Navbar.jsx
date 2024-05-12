@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/authContext';
 import { doSignOut } from '../../firebase/auth'
 import { IoGameControllerSharp } from "react-icons/io5";
+import { FaRegKeyboard } from "react-icons/fa";
+
 
 
 const NavBar = () => {
@@ -75,6 +77,19 @@ const NavBar = () => {
                     </div>
                 </div>
             )}
+
+
+            <Link to="/keys" className='mr-2'>
+            <div>
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.985 }}
+                                    className="group relative flex w-fit items-center"
+                                >
+                                <FaRegKeyboard className="transition-transform group-hover:scale-x-20 text-2xl group-active:scale-x-40 ml-2" />
+                                </motion.button>
+                            </div>
+            </Link>
 
             <Link to="/game" className='mr-2'>
             <div>

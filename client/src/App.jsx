@@ -16,6 +16,10 @@ import Loader from "./components/Loader";
 import FallingWords from "./components/FallingWords";
 import TrippyScroll from "./components/TrippyScroll";
 import StarsCanvas from "./components/StarCanvas";
+import { DetailedAccounts } from "./components/DetailedAccount";
+import Keyboard from "./components/Keyboard";
+
+import WithKeyBoard from "./components/WithKeyBoard";
 
 
 const App = () => {
@@ -35,6 +39,9 @@ const App = () => {
 
           <Route path="/game" element = {<FallingWords />} />
           <Route path="/scroll" element = {<TrippyScroll />} />
+          <Route path="/details" element = {<DetailedAccounts />} />
+          <Route path="/keys" element = {<KeyboardMode />} />
+
           <Route path="/star" element = {<StarsCanvas />} />
 
 
@@ -45,6 +52,17 @@ const App = () => {
     </NextUIProvider>
   );
 };
+
+
+const KeyboardMode = () => (
+  <>
+    <DurationProvider>
+      <ModeProvider>
+        <WithKeyBoard />
+      </ModeProvider>
+    </DurationProvider>
+  </>
+)
 
 const Home = () => (
   <>

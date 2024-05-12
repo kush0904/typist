@@ -137,7 +137,7 @@ const FallingWords = () => {
         <>
 
         <div className="w-[30%] flex flex-row items-center justify-between absolute top-0 mt-4 z-[2]">
-          <div className="flex items-center justify-between w-full h-auto border-2 border-[#835bfa61] bg-[#03001477] mr-[15px] px-[20px] py-[10px] rounded-full text-gray-200 hover:bg-black shadow-[0px_7px_25px_4px_#553c9a]">
+          <div className="flex items-center justify-between w-full h-auto border-2 border-[#835bfa61] bg-[#03001477] mr-[15px] px-[20px] py-[10px] rounded-full text-gray-200 hover:bg-black shadow-[0px_7px_25px_4px_#553c9a] hover:shadow-[0px_0px_13px_10px_#e2e8f0]">
           <Link to="/">
               Home
             </Link>
