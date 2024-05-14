@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import Navbar from "./components/NavBar/Navbar";
 import { DurationProvider } from "./components/DurationContext";
@@ -23,9 +23,42 @@ import Keyboard from "./components/Keyboard";
 import WithKeyBoard from "./components/WithKeyBoard";
 import { Contact } from "./components/Contact";
 import Beams from "./components/Beams";
+import { Navigate } from "react-router-dom";
 
+
+/* Typing game */
+
+import GameMenu from "./GameFolder/GameMenu";
+import socket from './socketConfig';
+import CreateGame from "./GameFolder/CreateGame";
+import JoinGame from "./GameFolder/JoinGame";
+import TypeRacer from "./GameFolder/TypeRacer";
 
 const App = () => {
+
+  const navigate = useNavigate();
+
+  const[gameState, setGameState] = useState({_id : "", isOpen : false, players : [], words: []});
+
+
+  useEffect(() => {
+    socket.on('updateGame', (game) => {
+      console.log(game);
+      setGameState(game);
+    });
+
+    return ()=>{
+      socket.removeAllListeners();
+    }
+  }, [])
+
+
+  useEffect(()=>{
+    if(gameState._id !== ""){
+      // <Route path={`/game/${gameState._id}`}/>
+      navigate(`/game/${gameState._id}`);
+    }
+  },[gameState._id]);
 
 
   useEffect(() => {
@@ -46,7 +79,6 @@ const App = () => {
     <NextUIProvider>
 
     <AuthProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -54,7 +86,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
 
 
-          <Route path="/game" element = {<FallingWords />} />
+          <Route path="/fallingwords" element = {<FallingWords />} />
           <Route path="/scroll" element = {<TrippyScroll />} />
           <Route path="/details" element = {<DetailedAccounts />} />
           <Route path="/keys" element = {<KeyboardMode />} />
@@ -63,13 +95,14 @@ const App = () => {
           <Route path="/contact" element = {<Contact />} />
           <Route path="/beams" element = {<Beams />} />
 
-
-
-
-
           <Route path="/results/:userId" element={<ShowDetailedResults />} />
+
+           {/* Game */}
+          <Route path="/game" element={<GameMenu />} />
+          <Route path="/game/create" element={<CreateGame />} />
+          <Route path = "/game/join" element = { <JoinGame /> } />
+          <Route path="/game/:gameID" element={<TypeRacer gameState={gameState} />} />        
         </Routes>
-      </Router>
     </AuthProvider>
     </NextUIProvider>
   );

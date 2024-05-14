@@ -85,7 +85,7 @@ const NavBar = () => {
                             </div>
             </Link>
 
-            <Link to="/game" className='mr-2'>
+            <Link to="/fallingwords" className='mr-2'>
             <div>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
