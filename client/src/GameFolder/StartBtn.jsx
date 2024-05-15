@@ -14,7 +14,7 @@ const StartBtn = ({player, gameID}) => {
     }
 
     return(
-        isPartyLeader && showBtn ? <button onClick={onClickHandler}>
+        isPartyLeader && showBtn ? <button onClick={onClickHandler} className='text-white z-20'>
             Start Game
         </button>
 

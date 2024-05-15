@@ -6,7 +6,7 @@ const svgToDataUri = require("mini-svg-data-uri");
 
 module.exports = {
   content: [
-    "./src/**/*.{html,js,css,jsx}",
+    "./src/**/*.{html,js,css,jsx,ts,tsx}",  // Merging all paths for content
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   darkMode: "class",
@@ -14,6 +14,19 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.yellow,
+      },
+      animation: {
+        aurora: "aurora 60s linear infinite",
+      },
+      keyframes: {
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
       },
     },
   },
@@ -35,6 +48,7 @@ module.exports = {
   ],
 };
 
+// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
 function addVariablesForColors({ addBase, theme }) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(

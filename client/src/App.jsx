@@ -33,6 +33,7 @@ import socket from './socketConfig';
 import CreateGame from "./GameFolder/CreateGame";
 import JoinGame from "./GameFolder/JoinGame";
 import TypeRacer from "./GameFolder/TypeRacer";
+import { AuroraBackgroundDemo } from "./components/AuroraBackGroundDemo";
 
 const App = () => {
 
@@ -94,6 +95,8 @@ const App = () => {
           <Route path="/star" element = {<StarsCanvas />} />
           <Route path="/contact" element = {<Contact />} />
           <Route path="/beams" element = {<Beams />} />
+          <Route path="/back" element = {<AuroraBackgroundDemo />} />
+
 
           <Route path="/results/:userId" element={<ShowDetailedResults />} />
 
