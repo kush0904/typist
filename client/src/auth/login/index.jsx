@@ -127,7 +127,7 @@ const Login = () => {
                                         <div className="mt-2">
                                         <div>
                                         </div>
-                                        <img src="../../../public/favicon.png" alt="Typista Logo" className="w-20 h-20 mx-auto" />
+                                        <img src="/favicon.png" alt="Typista Logo" className="w-20 h-20 mx-auto" />
 <h1 className="text-white font-bold sm:text-2xl font-mono ">TYPISTA</h1>
                                         </div>
                                     </div>

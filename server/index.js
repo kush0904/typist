@@ -31,7 +31,7 @@ app.use(cors());
 
 io.on('connect', (socket) => {
 
-
+    
     socket.on('userInput', async ({userInput, gameID})=>{
         try{
             let game = await Game.findById(gameID);
@@ -126,7 +126,36 @@ io.on('connect', (socket) => {
         }catch(err){
             console.log(err);
         }
-    })
+    });
+
+    socket.on('disconnect', async () => {
+        try {
+            console.log(`User disconnected: ${socket.id}`);
+    
+            let games = await Game.find({ 'players.socketID': socket.id });
+    
+            if (games.length === 0) {
+                console.log(`No games found for user ${socket.id}`);
+            }
+    
+            for (let game of games) {
+                console.log(`Updating game ${game._id.toString()} before removing user ${socket.id}`);
+                console.log(`Game state before update: ${JSON.stringify(game.players)}`);
+    
+                game.players = game.players.filter(player => player.socketID !== socket.id);
+                await game.save();
+    
+                const gameID = game._id.toString();
+                io.to(gameID).emit('updateGame', game);
+    
+                console.log(`Game state after update: ${JSON.stringify(game.players)}`);
+                console.log(`Updated game ${gameID} after user ${socket.id} disconnected`);
+            }
+        } catch (err) {
+            console.log(`Error on user disconnect: ${err}`);
+        }
+    });
+    
 });
 
 app.get('/', (req, res) => {

@@ -51,7 +51,7 @@ const CreateGame = () => {
       </motion.div>
 
 
-      <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2">
+      <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2">
                 <motion.div
                     initial={{ opacity: 0.0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}

@@ -27,7 +27,7 @@ router.get('/:userId', async (req, res) => {
         if (!results || results.length === 0) {
             return res.status(404).json({ message: 'Results not found' });
         }
-    
+
         return res.status(200).send({
             count: results.length,
             data: results,
@@ -77,7 +77,7 @@ router.post('/', bodyParser.json(), async (req, res) => {
     const outcome = await Results.create(result);
 
     result.save()
-        .then(() => {
+    .then(() => {
             res.send(outcome);
         })
         .catch((err) => {

@@ -23,7 +23,6 @@ import Keyboard from "./components/Keyboard";
 import WithKeyBoard from "./components/WithKeyBoard";
 import { Contact } from "./components/Contact";
 import Beams from "./components/Beams";
-import { Navigate } from "react-router-dom";
 
 
 /* Typing game */
@@ -78,35 +77,36 @@ const App = () => {
 
   return (
     <NextUIProvider>
+      <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<Home />} />
 
-    <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
+            <Route path="/fallingwords" element = {<FallingWords />} />
+            <Route path="/scroll" element = {<TrippyScroll />} />
+            <Route path="/details" element = {<DetailedAccounts />} />
+            <Route path="/keys" element = {<KeyboardMode />} />
+
+            <Route path="/star" element = {<StarsCanvas />} />
+            <Route path="/contact" element = {<ContactContainer />} />
+            <Route path="/beams" element = {<Beams />} />
+            <Route path="/back" element = {<AuroraBackgroundDemo />} />
+
+            <Route path="/results/:userId" element={<ShowDetailedResults />} />
 
 
-          <Route path="/fallingwords" element = {<FallingWords />} />
-          <Route path="/scroll" element = {<TrippyScroll />} />
-          <Route path="/details" element = {<DetailedAccounts />} />
-          <Route path="/keys" element = {<KeyboardMode />} />
-
-          <Route path="/star" element = {<StarsCanvas />} />
-          <Route path="/contact" element = {<Contact />} />
-          <Route path="/beams" element = {<Beams />} />
-          <Route path="/back" element = {<AuroraBackgroundDemo />} />
+            <Route path="/detailed" element = {<DetailedAccounts />} />
 
 
-          <Route path="/results/:userId" element={<ShowDetailedResults />} />
-
-           {/* Game */}
-          <Route path="/game" element={<GameMenu />} />
-          <Route path="/game/create" element={<CreateGame />} />
-          <Route path = "/game/join" element = { <JoinGame /> } />
-          <Route path="/game/:gameID" element={<TypeRacer gameState={gameState} />} />        
-        </Routes>
-    </AuthProvider>
+            {/* Game */}
+            <Route path="/game" element={<GameMenu />} />
+            <Route path="/game/create" element={<CreateGame />} />
+            <Route path = "/game/join" element = { <JoinGame /> } />
+            <Route path="/game/:gameID" element={<TypeRacer gameState={gameState} />} />        
+          </Routes>
+      </AuthProvider>
     </NextUIProvider>
   );
 };
@@ -122,6 +122,16 @@ const KeyboardMode = () => (
   </>
 )
 
+const ContactContainer = () => {
+  return (
+    <>
+      <Navbar />
+      <Contact />
+    </>
+  );
+}
+
+
 const Home = () => (
   <>
     <DurationProvider>
@@ -133,5 +143,7 @@ const Home = () => (
     </DurationProvider>
   </>
 );
+
+
 
 export default App;

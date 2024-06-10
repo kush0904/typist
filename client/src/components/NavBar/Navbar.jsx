@@ -10,6 +10,7 @@ import { doSignOut } from '../../firebase/auth'
 import { IoGameControllerSharp } from "react-icons/io5";
 import { FaRegKeyboard } from "react-icons/fa";
 import { IoFootballSharp } from "react-icons/io5";
+import { DetailedAccounts } from '../DetailedAccount';
 
 
 
@@ -47,22 +48,22 @@ const NavBar = () => {
     const handleUserClick = () => {
         setShowDropdown(!showDropdown);
         setIsLoggedIn(!!localStorage.getItem("userId"));
-
         clearTimeout(dropdownTimeoutRef.current);
         dropdownTimeoutRef.current = setTimeout(() => {
             setShowDropdown(false);
-        }, 10000);
+        }, 30000);
     };
 
     const handleDropdownClose = () => {
         setShowDropdown(false);
         clearTimeout(dropdownTimeoutRef.current);
+        
     };
 
 
 
     return (
-        <nav className="w-full flex justify-between items-center mx-auto px-8 h-20 text-white top-0 left-0">
+        <nav className="w-full flex justify-between items-center mx-auto px-8 h-20 text-white top-0 left-0 z-100">
             <div className="flex items-center">
                 <a className="_o6689fn" href="/">
                     <div className="md:block text-3xl">
@@ -149,7 +150,25 @@ const NavBar = () => {
                     }
                     </button>
                     {showDropdown && (
-                        <motion.div
+                        <DetailedAccounts userLoggedIn={userLoggedIn} />
+                    )} 
+                </div>
+            </div>
+            </div>
+        </nav>
+    );
+};
+
+
+
+
+export default NavBar;
+
+
+
+
+
+{/* <motion.div
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
@@ -168,13 +187,4 @@ const NavBar = () => {
                                 )}
                             </div>
                             <button onClick={handleDropdownClose} className="block w-full text-center px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-900">Close</button>
-                        </motion.div>
-                    )}
-                </div>
-            </div>
-            </div>
-        </nav>
-    );
-};
-
-export default NavBar;
+                        </motion.div> */}

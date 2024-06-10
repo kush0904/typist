@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+    
 const uri = "http://api.quotable.io/random";
 
 const getData = () => {

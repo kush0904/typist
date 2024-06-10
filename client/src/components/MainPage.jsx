@@ -10,6 +10,7 @@ import { calculateAccuracyPercentage } from "../utils/helpers";
 import { useContext } from "react";
 import ModeSelect from "./ModeSelect";
 
+
 const MainPage = () => {
   const { words, typed, timeLeft, errors, state, restart, totalTyped } = useEngine();
 

@@ -8,6 +8,7 @@ import Form from './Form';
 import ProgressBar from './ProgressBar';
 import ScoreBoard from './ScoreBoard';
 import DisplayCode from './DisplayCode';
+import AuroraBackground from '../components/ui/aurora-background';
 
 const TypeRacer = ({ gameState }) => {
     const navigate = useNavigate(); 
@@ -26,15 +27,20 @@ const TypeRacer = ({ gameState }) => {
     const player = findPlayer(players);
 
     return (
-        <div className='text-center'>
+        <AuroraBackground>
+        
+        <div className="relative px-4 mt-[-10%]">
             <DisplayWords words = {words} player = {player} />
-            <ProgressBar players = {players} player = {player} wordsLength = {words.length} />
             <Form isOpen = {isOpen} isOver = {isOver} gameID = {_id} />
+                        <ProgressBar players = {players} player = {player} wordsLength = {words.length} />
+
             <Countdown />
             <StartBtn player={player} gameID={_id} />
             <DisplayCode gameID = {_id}/>
             <ScoreBoard players = {players} />
+        
         </div>
+        </AuroraBackground>
     )
 }
 

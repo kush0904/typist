@@ -6,7 +6,7 @@ import { SiGithub, SiGmail , SiInstagram , SiLinkedin  } from "react-icons/si";
 
 export const Contact = () => {
   return (
-    <div className="min-h-screen bg-zinc-900 px-4 py-12 text-zinc-50">
+    <div className="min-h-screen bg-zinc-900 px-4 py-12 text-zinc-50 ">
       <motion.div
         initial="initial"
         animate="animate"
@@ -60,7 +60,7 @@ const HeaderBlock = () => (
     <img
       src="/dp.jpg"
       alt="avatar"
-      className="mb-4 size-14 rounded-full"
+      className="mb-4 size-14 rounded-full" 
     />
     <h1 className="mb-12 text-4xl font-medium leading-tight">
       TYPISTA{" "}

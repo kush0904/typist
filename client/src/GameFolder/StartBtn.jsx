@@ -13,13 +13,15 @@ const StartBtn = ({player, gameID}) => {
         setShowBtn(false);
     }
 
-    return(
-        isPartyLeader && showBtn ? <button onClick={onClickHandler} className='text-white z-20'>
-            Start Game
-        </button>
-
-        : null
-    )
+    return (
+        isPartyLeader && showBtn ? (
+          <div className="flex relative justify-center">
+            <button onClick={onClickHandler} className="bg-black border-2 border-white dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 hover:shadow-[0px_0px_13px_2px_#e2e8f0]">
+              Start Game
+            </button>
+          </div>
+        ) : null
+      );
 
     
 }

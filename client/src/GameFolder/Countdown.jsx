@@ -17,10 +17,11 @@ const Countdown = (props) => {
 
     const {countDown, msg} = timer;
     return (
-        <>
-            <h1>{countDown}</h1>
-            <h2>{msg}</h2>
-        </>
+<div className='flex items-center justify-center fixed top-0 left-0 right-0 m-4 flex-col'>
+    <h1 className='text-2xl font-bold text-white'>{countDown}</h1>
+    <h2 className='text-2xl text-gray-300'>{msg}</h2>
+</div>
+
     )
 }
 
