@@ -64,7 +64,7 @@ const Register = () => {
                     {userLoggedIn && <Navigate to={'/home'} replace={true} />}
 
                     <main className="w-full h-screen flex self-center place-content-center place-items-center">
-                        <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
+                        <div className="w-full max-w-md text-white space-y-6 p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 bg-white/10 rounded-2xl backdrop-blur-xl transition-all">
                             <div className="text-center mb-6">
                                 <div className="mt-2">
                                     <h3 className="text-white text-xl font-semibold sm:text-2xl">Create a New Account</h3>
@@ -81,7 +81,7 @@ const Register = () => {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border focus:indigo-600 shadow-sm rounded-lg transition duration-300"
+                                        className="w-full mt-2 px-4 py-3 text-white bg-white/5 outline-none border border-white/10 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20 shadow-inner rounded-xl transition-all duration-300 backdrop-blur-md placeholder-white/40"
                                     />
                                 </div>
 
@@ -96,7 +96,7 @@ const Register = () => {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border shadow-sm rounded-lg transition duration-300"
+                                        className="w-full mt-2 px-4 py-3 text-white bg-white/5 outline-none border border-white/10 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20 shadow-inner rounded-xl transition-all duration-300 backdrop-blur-md placeholder-white/40"
                                     />
                                 </div>
 
@@ -111,7 +111,7 @@ const Register = () => {
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+                                        className="w-full mt-2 px-4 py-3 text-white bg-white/5 outline-none border border-white/10 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20 shadow-inner rounded-xl transition-all duration-300 backdrop-blur-md placeholder-white/40"
                                     />
                                 </div>
 
@@ -122,7 +122,7 @@ const Register = () => {
                                 <button
                                     type="submit"
                                     disabled={isRegistering}
-                                    className={`w-full px-4 py-2 text-black font-medium rounded-lg ${isRegistering ? 'bg-gray-300 cursor-not-allowed' : 'bg-white hover:bg-black hover:text-white hover:border-white border transition duration-300'}`}
+                                    className={`w-full px-4 py-3 font-bold text-lg rounded-xl shadow-lg hover:shadow-white/20 ${isRegistering ? 'bg-white/50 cursor-not-allowed text-black/50' : 'bg-white text-black hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]'}`}
                                 >
                                     {isRegistering ? 'Signing Up...' : 'Sign Up'}
                                 </button>

@@ -4,10 +4,10 @@
 	flex-direction: column; 
 	justify-content: center; 
 	align-items: center;
-	position: absolute;
-	bottom: 0;
-	top:58vh; 
-} 
+	position: relative;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
 
 .container { 
 	padding: 20px 20px; 

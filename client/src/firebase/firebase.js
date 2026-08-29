@@ -3,13 +3,13 @@ import { getAuth } from "firebase/auth";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBfQbW9Oerz36Ce0orbdgUdn9hIqa9SdSY",
-  authDomain: "typista-1e651.firebaseapp.com",
-  projectId: "typista-1e651",
-  storageBucket: "typista-1e651.appspot.com",
-  messagingSenderId: "986317410419",
-  appId: "1:986317410419:web:42c4b9d0f1dbf8e91dda06",
-  measurementId: "G-JJ8WVJ0TL7"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

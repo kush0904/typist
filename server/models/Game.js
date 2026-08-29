@@ -18,6 +18,7 @@ const PlayerSchema = new mongoose.Schema({
 
 
 const GameSchema = new mongoose.Schema({
+    _id: { type: String, required: true },
     words : [{type : String}],
     isOpen : {type : Boolean, default : true},
     isOver : {type : Boolean, default : false},

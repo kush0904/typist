@@ -19,35 +19,38 @@ const app = express();
 const server = http.createServer(app);
 
 const io = socketio(server, {
-  cors: {
-    origin: "*", 
-    methods: ["GET", "POST"], 
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
+    cors: {
+        origin: cred.CLIENT_URL,
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+    }
 });
 
-app.use(cors());
+app.use(cors({
+    origin: cred.CLIENT_URL,
+    credentials: true
+}));
 
 io.on('connect', (socket) => {
 
-    
-    socket.on('userInput', async ({userInput, gameID})=>{
-        try{
+
+    socket.on('userInput', async ({ userInput, gameID }) => {
+        try {
             let game = await Game.findById(gameID);
-            if(!game.isOpen && !game.isOver){
+            if (!game.isOpen && !game.isOver) {
                 let player = game.players.find(player => player.socketID === socket.id);
                 let word = game.words[player.currentWordIndex];
-                if(word === userInput){
+                if (word === userInput) {
                     player.currentWordIndex++;
-                    if(player.currentWordIndex !== game.words.length){
+                    if (player.currentWordIndex !== game.words.length) {
                         game = await game.save();
                         io.to(gameID).emit('updateGame', game);
                     }
-                    else{
+                    else {
                         let endTime = new Date().getTime();
-                        let {startTime} = game;
-                        player.WPM = calculate(endTime, startTime, player);
+                        let { startTime } = game;
+                        player.WPM = calculateWPM(endTime, startTime, player);
                         game = await game.save();
                         socket.emit('done');
                         io.to(gameID).emit('updateGame', game);
@@ -55,24 +58,24 @@ io.on('connect', (socket) => {
                 }
             }
         }
-        catch(err){
+        catch (err) {
             console.log(err);
         }
     });
 
 
-    socket.on('timer', async({gameID, playerID}) => {
+    socket.on('timer', async ({ gameID, playerID }) => {
         let countDown = 5;
         let game = await Game.findById(gameID);
         let player = game.players.id(playerID);
 
-        if(player.isPartyLeader){
-            let timerID = setInterval(async()=>{
-                if(countDown >=0){
-                    io.to(gameID).emit('timer', {countDown, msg : "Starting game"});
+        if (player.isPartyLeader) {
+            let timerID = setInterval(async () => {
+                if (countDown >= 0) {
+                    io.to(gameID).emit('timer', { countDown, msg: "Starting game" });
                     countDown--;
                 }
-                else{
+                else {
                     game.isOpen = false;
                     game = await game.save();
                     io.to(gameID).emit('updateGame', game);
@@ -83,47 +86,98 @@ io.on('connect', (socket) => {
         }
     });
 
-    socket.on('join-game', async ({gameID : _id, nickName}) => {
-        try{
+    socket.on('join-game', async ({ gameID: _id, nickName }) => {
+        try {
             let game = await Game.findById(_id);
-            if(game.isOpen){
+            if (game.isOpen) {
                 const gameID = game._id.toString();
                 socket.join(gameID);
 
                 let player = {
-                    socketID : socket.id,
-                    nickName : nickName
+                    socketID: socket.id,
+                    nickName: nickName
                 }
                 game.players.push(player);
                 game = await game.save();
 
                 io.to(gameID).emit('updateGame', game);
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     })
 
 
-    socket.on('create-game', async (nickName)=>{
-        try{
+    socket.on('create-game', async (nickName) => {
+        try {
             const quotableData = await QoutableAPI();
-            let game = new Game();
+
+            let gameID;
+            let isUnique = false;
+            while (!isUnique) {
+                gameID = Math.random().toString(36).substring(2, 8).toUpperCase();
+                const existingGame = await Game.findById(gameID);
+                if (!existingGame) {
+                    isUnique = true;
+                }
+            }
+
+            let game = new Game({ _id: gameID });
             game.words = quotableData;
             let player = {
-                socketID : socket.id,
-                isPartyLeader : true,
-                nickName : nickName
+                socketID: socket.id,
+                isPartyLeader: true,
+                nickName: nickName
             }
 
             game.players.push(player);
             game = await game.save();
 
-            const gameID = game._id.toString();
+            gameID = game._id.toString();
             socket.join(gameID);
             io.to(gameID).emit('updateGame', game);
 
-        }catch(err){
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
+    socket.on('restart-game', async (gameID) => {
+        try {
+            let game = await Game.findById(gameID);
+            if (game) {
+                const quotableData = await QoutableAPI();
+                game.words = quotableData;
+                game.isOpen = true;
+                game.isOver = false;
+
+                game.players.forEach(player => {
+                    player.currentWordIndex = 0;
+                    player.WPM = -1;
+                });
+
+                game = await game.save();
+                io.to(gameID).emit('updateGame', game);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
+    socket.on('leave-room', async (gameID) => {
+        try {
+            let game = await Game.findById(gameID);
+            if (game) {
+                game.players = game.players.filter(player => player.socketID !== socket.id);
+                socket.leave(gameID);
+                if (game.players.length === 0) {
+                    await Game.findByIdAndDelete(gameID);
+                } else {
+                    game = await game.save();
+                    io.to(gameID).emit('updateGame', game);
+                }
+            }
+        } catch (err) {
             console.log(err);
         }
     });
@@ -131,31 +185,31 @@ io.on('connect', (socket) => {
     socket.on('disconnect', async () => {
         try {
             console.log(`User disconnected: ${socket.id}`);
-    
+
             let games = await Game.find({ 'players.socketID': socket.id });
-    
+
             if (games.length === 0) {
                 console.log(`No games found for user ${socket.id}`);
             }
-    
+
             for (let game of games) {
-                console.log(`Updating game ${game._id.toString()} before removing user ${socket.id}`);
-                console.log(`Game state before update: ${JSON.stringify(game.players)}`);
-    
                 game.players = game.players.filter(player => player.socketID !== socket.id);
-                await game.save();
-    
-                const gameID = game._id.toString();
-                io.to(gameID).emit('updateGame', game);
-    
-                console.log(`Game state after update: ${JSON.stringify(game.players)}`);
-                console.log(`Updated game ${gameID} after user ${socket.id} disconnected`);
+
+                if (game.players.length === 0) {
+                    await Game.findByIdAndDelete(game._id);
+                    console.log(`Deleted empty game ${game._id.toString()}`);
+                } else {
+                    await game.save();
+
+                    const gameID = game._id.toString();
+                    io.to(gameID).emit('updateGame', game);
+                }
             }
         } catch (err) {
             console.log(`Error on user disconnect: ${err}`);
         }
     });
-    
+
 });
 
 app.get('/', (req, res) => {
@@ -184,20 +238,20 @@ const startGameClock = async (gameID) => {
     game = await game.save();
 
     let time = 15;
-    let timerID = setInterval( function gameIntervalFunc(){
-        if(time >= 0){
+    let timerID = setInterval(function gameIntervalFunc() {
+        if (time >= 0) {
             const formatTime = calculateTime(time);
-            io.to(gameID).emit('timer', {countDown: formatTime, msg : "Time Remaining"});
+            io.to(gameID).emit('timer', { countDown: formatTime, msg: "Time Remaining" });
             time--;
         }
-        else{
+        else {
             (async () => {
                 let endTime = new Date().getTime();
                 let game = await Game.findById(gameID);
-                let {startTime} = game;
+                let { startTime } = game;
                 game.isOver = true;
                 game.players.forEach((player, index) => {
-                    if(player.WPM === -1){
+                    if (player.WPM === -1) {
                         game.players[index].WPM = calculateWPM(endTime, startTime, player);
                     }
                 });
@@ -208,12 +262,12 @@ const startGameClock = async (gameID) => {
 
         }
         return gameIntervalFunc;
-    }(),1000);
+    }(), 1000);
 }
 
 
 const calculateTime = (time) => {
-    let minutes = Math.floor(time/60);
+    let minutes = Math.floor(time / 60);
     let seconds = time % 60;
     return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 }
@@ -225,3 +279,5 @@ const calculateWPM = (endTime, startTime, player) => {
     const WPM = Math.floor(numOfWords / timeInMinutes);
     return WPM;
 }
+
+// nodemon restart trigger

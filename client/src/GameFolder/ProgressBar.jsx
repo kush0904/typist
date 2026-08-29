@@ -14,7 +14,7 @@ const ProgressBar = ({ players, player, wordsLength }) => {
     return (
         <div>
             <div key={player._id} className="flex px-7 text-center items-center">
-            <div className="text-white mr-5">{player.nickName}</div>
+            <div className="text-white mr-5 whitespace-nowrap min-w-[100px] text-right">{player.nickName}</div>
 
                 <div className="progress my-2 w-full">
 
@@ -33,7 +33,7 @@ const ProgressBar = ({ players, player, wordsLength }) => {
                 return playerObj._id !== player._id ? (
 
                     <div key={playerObj._id} className="flex px-7 text-center items-center">
-                    <div className=" text-white mr-5">{playerObj.nickName}</div>
+                    <div className=" text-white mr-5 whitespace-nowrap min-w-[100px] text-right">{playerObj.nickName}</div>
 
                     <div className="progress my-2 w-full">
 

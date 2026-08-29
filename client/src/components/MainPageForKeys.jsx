@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GeneratedWords from "./GeneratedWords";
+
 import RestartButton from "./RestartButton";
 import Results from "./Results";
 import UserTypings from "./UserTypings";
@@ -16,8 +16,7 @@ const MainPageForKeys = () => {
       <DurationSelect disabled={state !== "start"} />
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
-        <GeneratedWords key={words} words={words} />
-        <UserTypings className="absolute inset-0" words={words} userInput={typed} />
+        <UserTypings words={words} userInput={typed} />
       </WordsContainer>
         <RestartButton className={"mx-auto mt-10 text-slate-500"} onRestart={() => { restart(); document.activeElement.blur(); }} />
       {timeLeft > 0 && <Keyboard />}
@@ -34,7 +33,7 @@ const MainPageForKeys = () => {
 };
 
 const WordsContainer = ({ children }) => {
-  return <div className="relative text-2xl leading-relaxed break-all mt-3">{children}</div>;
+  return <div className="relative text-2xl leading-relaxed break-words mt-3">{children}</div>;
 };
 
 const CountdownTimer = ({ timeLeft }) => {

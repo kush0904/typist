@@ -50,10 +50,6 @@ const WithKeyBoard = () => {
     className="relative  min-h-screen overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
 
         <motion.section>
-            <motion.div className="fixed top-0 left-0 w-full z-50">
-                <NavBar />
-            </motion.div>
-
             <div className="relative z-10 w-full">
                 <MainPageForKeys />
             </div>
