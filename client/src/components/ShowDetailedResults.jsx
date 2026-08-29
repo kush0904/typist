@@ -16,25 +16,23 @@ export default function ShowDetailedResults() {
             try {
                 const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
                 const response = await axios.get(`${serverUrl}/results/user/${userId}`);
-                
+
                 const modifiedData = response.data.data.map(item => ({
                     ...item,
                     wpm: Math.round(item.cpm / 5),
-                    time: new Date(item.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    time: new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     date: new Date(item.createdAt).toLocaleDateString(),
                 }));
                 setData(modifiedData);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setShowLoader(false);
             }
         };
 
         fetchData();
-    }, [userId]);   
-
-    useEffect(() => {
-        setShowLoader(false); 
-    }, []); 
+    }, [userId]);
 
     // Aggregate Stats
     const maxWpm = data.length > 0 ? Math.max(...data.map(d => d.wpm)) : 0;
@@ -47,11 +45,11 @@ export default function ShowDetailedResults() {
 
     return (
         <div className="min-h-screen bg-black/90 text-white font-sans selection:bg-indigo-500/30 overflow-x-hidden">
-            {showLoader ? ( 
+            {showLoader ? (
                 <Loader />
             ) : (
                 <div className="max-w-7xl mx-auto p-6 pt-24 pb-20">
-                    
+
                     {/* Header */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                         <div>
@@ -64,7 +62,7 @@ export default function ShowDetailedResults() {
                     </div>
 
                     {data.length > 0 ? (
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="space-y-8"
@@ -103,7 +101,7 @@ export default function ShowDetailedResults() {
                                 <div className="flex items-end justify-between h-48 gap-1 md:gap-3">
                                     {chartData.map((wpm, i) => (
                                         <div key={i} className="relative group flex-1 bg-zinc-950/50 rounded-t-md h-full flex items-end overflow-visible">
-                                            <motion.div 
+                                            <motion.div
                                                 initial={{ height: 0 }}
                                                 animate={{ height: `${(wpm / chartMax) * 100}%` }}
                                                 transition={{ duration: 1, delay: i * 0.05, ease: "easeOut" }}
@@ -123,7 +121,7 @@ export default function ShowDetailedResults() {
                                 <h2 className="text-xl font-bold text-white mb-6">Session History</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                     {data.map((result, index) => (
-                                        <motion.div 
+                                        <motion.div
                                             key={index}
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
