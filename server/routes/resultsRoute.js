@@ -20,7 +20,7 @@ router.get('/', (req,res) => {
 
 // get by user id
 
-router.get('/:userId', async (req, res) => {
+router.get('/user/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const results = await Results.find({ userId }).sort({ createdAt: -1 }); // Sorting by createdAt field in descending order
@@ -66,23 +66,20 @@ router.get('/:id', async (req, res) => {
 router.post('/', bodyParser.json(), async (req, res) => {
     const { userId, typed, accuracy, cpm, error } = req.body;
 
-    const result = new Results({
-        userId,
-        typed,
-        accuracy,
-        cpm,
-        error
-    });
-
-    const outcome = await Results.create(result);
-
-    result.save()
-    .then(() => {
-            res.send(outcome);
-        })
-        .catch((err) => {
-            res.status(500).send(err);
+    try {
+        const result = new Results({
+            userId,
+            typed,
+            accuracy,
+            cpm,
+            error
         });
+    
+        const outcome = await result.save();
+        res.send(outcome);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 

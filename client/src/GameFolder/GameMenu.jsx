@@ -7,6 +7,11 @@ import { motion } from "framer-motion";
 const GameMenu = () => {
     return (
         <AuroraBackground>
+            <Link to="/" className="absolute top-8 left-8 z-50">
+                <button className="bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-fit px-4 py-2 rounded-full border border-zinc-500">
+                    &larr; Back to Home
+                </button>
+            </Link>
             <motion.div
         initial={{ opacity: 0.0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -31,6 +36,7 @@ const GameMenu = () => {
         <Link to="/game/join">
             <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">Join Game</button>
         </Link>
+
       </motion.div>
         </AuroraBackground>
     );

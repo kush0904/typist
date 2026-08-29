@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { FiArrowRight, FiMail, FiMapPin } from "react-icons/fi";
-import { SiGithub, SiGmail , SiInstagram , SiLinkedin  } from "react-icons/si";
+import { SiGithub, SiGmail, SiInstagram, SiLinkedin } from "react-icons/si";
 
 export const Contact = () => {
   return (
@@ -18,7 +18,7 @@ export const Contact = () => {
         <HeaderBlock />
         <SocialsBlock />
         <AboutBlock />
-        <LocationBlock />
+        <ServerStatusBlock />
         <EmailListBlock />
       </motion.div>
     </div>
@@ -60,16 +60,17 @@ const HeaderBlock = () => (
     <img
       src="/dp.jpg"
       alt="avatar"
-      className="mb-4 size-14 rounded-full" 
+      className="mb-4 size-14 rounded-full"
     />
     <h1 className="mb-12 text-4xl font-medium leading-tight">
       TYPISTA{" "}
       <span className="text-zinc-400">
+
       </span>
     </h1>
-   
-     <FiArrowRight />
-    </Block>
+
+    <span>Kush</span>
+  </Block>
 );
 
 const SocialsBlock = () => (
@@ -139,45 +140,93 @@ const SocialsBlock = () => (
 
 const AboutBlock = () => (
   <Block className="col-span-12 text-3xl leading-snug">
-   <p>
-    Ready to type like lightning?  
-    <br />
-    <span className="text-zinc-400">
+    <p>
+      Ready to type like lightning?
+      <br />
+      <span className="text-zinc-400">
         Built with React, Tailwind CSS, and Framer Motion. Let's race those fingers!
-    </span>
-</p>
+      </span>
+    </p>
 
   </Block>
 );
 
-const LocationBlock = () => (
-  <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-3">
-    <FiMapPin className="text-3xl" />
-    <p className="text-center text-lg text-zinc-400">ONLINE</p>
+const ServerStatusBlock = () => (
+  <Block className="col-span-12 flex flex-col items-center justify-center gap-3 md:col-span-3">
+    <div className="relative flex h-6 w-6 items-center justify-center">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+    </div>
+    <p className="text-center text-lg font-mono text-zinc-400 tracking-wider">SERVERS<br/>ONLINE</p>
   </Block>
 );
 
-const EmailListBlock = () => (
-  <Block className="col-span-12 md:col-span-9">
-    <p className="mb-3 text-lg">Join my mailing list</p>
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="flex items-center gap-2"
-    >
-      <input
-        type="email"
-        placeholder="Enter your email"
-        className="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
-      />
-      <button
-        type="submit"
-        className="flex items-center gap-2 whitespace-nowrap rounded bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-300"
+const EmailListBlock = () => {
+  const [joined, setJoined] = React.useState(() => {
+    return localStorage.getItem("subscribed") === "true";
+  });
+  const [email, setEmail] = React.useState(() => {
+    return localStorage.getItem("subscribedEmail") || "";
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!joined && !email) return;
+    
+    const newJoinedState = !joined;
+    setJoined(newJoinedState);
+    
+    if (newJoinedState) {
+      localStorage.setItem("subscribed", "true");
+      localStorage.setItem("subscribedEmail", email);
+    } else {
+      localStorage.removeItem("subscribed");
+      localStorage.removeItem("subscribedEmail");
+      setEmail(''); // clear email on unsubscribe
+    }
+  };
+
+  return (
+    <Block className="col-span-12 md:col-span-9">
+      <p className="mb-3 text-lg">Join my mailing list</p>
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center gap-2"
       >
-        <FiMail /> Join the list
-      </button>
-    </form>
-  </Block>
-);
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={joined}
+          className={`w-full rounded border px-3 py-1.5 transition-colors focus:outline-0 ${
+            joined 
+              ? 'bg-zinc-700/50 border-zinc-600 text-zinc-400 cursor-not-allowed' 
+              : 'border-zinc-700 bg-zinc-800 focus:border-red-300'
+          }`}
+        />
+        <button
+          type="submit"
+          className={`flex items-center gap-2 whitespace-nowrap rounded px-3 py-2 text-sm font-medium transition-all duration-300 w-[140px] justify-center ${
+            joined 
+              ? 'bg-green-500/20 text-green-400 hover:bg-red-500/20 hover:text-red-400 border border-green-500/50 hover:border-red-500/50 group' 
+              : 'bg-zinc-50 text-zinc-900 hover:bg-zinc-300'
+          }`}
+        >
+          {joined ? (
+            <>
+              <span className="group-hover:hidden flex items-center gap-2"><FiMail /> Subscribed!</span>
+              <span className="hidden group-hover:flex items-center gap-2">Unsubscribe</span>
+            </>
+          ) : (
+            <><FiMail /> Join the list</>
+          )}
+        </button>
+      </form>
+    </Block>
+  );
+};
 
 const Logo = () => {
   return (

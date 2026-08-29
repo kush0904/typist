@@ -32,6 +32,8 @@ const Results = ({
     cpm = total - errors;
   }
 
+  const wpm = Math.round(cpm / 5);
+
   return (
     <motion.div
       initial={initial}
@@ -91,8 +93,8 @@ const Results = ({
         }}
         className="glow"
       >
-        CPM:
-        <span>{cpm}</span>
+        WPM:
+        <span>{wpm}</span>
       </motion.div>
 
       {userId ? (

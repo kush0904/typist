@@ -1,11 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import socket from '../socketConfig';
+import useGameStore from '../store/useGameStore';
 
 const StartBtn = ({player, gameID}) => {
 
     const [showBtn, setShowBtn] = useState(true);
+    const gameState = useGameStore((state) => state.gameState);
 
     const {isPartyLeader} = player;
+
+    React.useEffect(() => {
+        setShowBtn(true);
+    }, [gameState.words]);
 
     const onClickHandler = (e) => {
         e.preventDefault();

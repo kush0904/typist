@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import socket from '../socketConfig';
 import AuroraBackground from "../components/ui/aurora-background";
 import { motion } from "framer-motion";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const JoinGame = () => {
+    const location = useLocation();
+    
     const [userInput, setUserInput] = useState({ gameID: '', nickName: '' });
     const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const initialCode = queryParams.get('code');
+        if (initialCode) {
+            setUserInput(prev => ({ ...prev, gameID: initialCode }));
+        }
+    }, [location.search]);
 
     const onChange = (e) => {
         setUserInput({ ...userInput, [e.target.name]: e.target.value });

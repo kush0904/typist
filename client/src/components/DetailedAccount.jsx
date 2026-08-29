@@ -4,14 +4,29 @@ import { FiArrowRight, FiX } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { doSignOut } from "../firebase/auth";
+import useGameStore from "../store/useGameStore";
+import socket from "../socketConfig";
 
-export const DetailedAccounts = ({ userLoggedIn }) => {
+export const DetailedAccounts = ({ userLoggedIn, onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+
+  const gameState = useGameStore((state) => state.gameState);
+  const setGameState = useGameStore((state) => state.setGameState);
+
+  const handleNavigate = () => {
+    if (gameState._id) {
+      socket.emit('leave-room', gameState._id);
+      setGameState({ _id: "", isOpen: false, players: [], words: [] });
+    }
+    setIsVisible(false);
+    if (onClose) onClose();
+  };
 
   const handleSignOut = () => {
     doSignOut().then(() => {
       navigate('/home');
+      handleNavigate();
     });
   };
 
@@ -20,10 +35,10 @@ export const DetailedAccounts = ({ userLoggedIn }) => {
   }
 
   return (
-    <section className="bg-neutral-950 p-4 md:p-8 fixed left-0 w-full h-full z-90">
+    <section className="bg-neutral-950 p-4 md:p-8 fixed top-0 left-0 w-screen h-screen z-[999]">
       <button
-        onClick={() => setIsVisible(false)}
-        className="absolute top-10 right-5 bg-neutral-800 text-neutral-50 p-2 rounded-full"
+        onClick={() => { setIsVisible(false); if (onClose) onClose(); }}
+        className="absolute top-10 right-10 bg-neutral-800 text-neutral-50 p-3 rounded-full hover:bg-neutral-700 transition-colors z-[1000]"
       >
         <FiX size={24} />
       </button>
@@ -36,7 +51,7 @@ export const DetailedAccounts = ({ userLoggedIn }) => {
             handleClick={handleSignOut}
           />
         ) : (
-          <Link to="/login">
+          <Link to="/login" onClick={handleNavigate}>
             <Links
               heading="Log-In"
               subheading="Log in or create your account"
@@ -44,33 +59,33 @@ export const DetailedAccounts = ({ userLoggedIn }) => {
             />
           </Link>
         )}
-        <Link to="/home">
+        <Link to="/home" onClick={handleNavigate}>
           <Links
             heading="Home"
             subheading="Back to home"
             imgSrc="/home.png"
           />
         </Link>
-        <Link to="/fallingwords">
+        <Link to="/fallingwords" onClick={handleNavigate}>
           <Links
             heading="Falling-Words"
             subheading="Catch the falling words"
             imgSrc="/fallingWords.png"
           />
         </Link>
-      
-        <Link to="/game">
+
+        <Link to="/game" onClick={handleNavigate}>
           <Links
             heading="Multiplayer"
             subheading="Play with your friends"
             imgSrc="/game.png"
           />
         </Link>
-        <Link to="/game">
+        <Link to="/about" onClick={handleNavigate}>
           <Links
             heading="About-Us"
             subheading="More about us"
-            imgSrc="/imgs/random/5.jpg"
+            imgSrc="/about-section.jpg"
           />
         </Link>
       </div>

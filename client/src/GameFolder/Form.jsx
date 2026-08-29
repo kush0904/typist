@@ -12,6 +12,8 @@ const Form = ({isOpen, isOver, gameID}) => {
     useEffect(()=>{
         if(!isOpen){
             textInput.current.focus();
+        } else {
+            setUserInput("");
         }
     },[isOpen])
     const resetForm = () => {
@@ -23,11 +25,18 @@ const Form = ({isOpen, isOver, gameID}) => {
         let value = e.target.value;
         let lastChar = value.charAt(value.length - 1);
         if(lastChar === " "){
-            socket.emit('userInput', {userInput, gameID});
+            socket.emit('userInput', {userInput: value.trim(), gameID});
             resetForm();
         }
         else{
             setUserInput(e.target.value);
+        }
+    }
+
+    const onKeyDown = (e) => {
+        if (e.key === "Enter") {
+            socket.emit('userInput', {userInput: e.target.value.trim(), gameID});
+            resetForm();
         }
     }
 
@@ -41,6 +50,7 @@ const Form = ({isOpen, isOver, gameID}) => {
                     readOnly = {isOpen || isOver}
                     value={userInput}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
                     ref = {textInput}
                     className="group relative flex w-fit items-center gap-1.5 bg-gray-950/10 px-4 py-2 text-gray-50 hover:bg-gray-950/50"
                     placeholder="type here"

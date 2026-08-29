@@ -58,7 +58,8 @@ const sendResultsToServer = async (resultsData) => {
 
   console.log(resultsData);
   try {
-    const response = await axios.post('http://localhost:5000/results/', resultsData);
+    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+    const response = await axios.post(`${serverUrl}/results/`, resultsData);
     console.log('Results sent to server successfully');
   } catch (error) {
     console.error('Error sending results to server:', error.message);
@@ -86,19 +87,14 @@ const sendResultsToServer = async (resultsData) => {
       let cpms = 0;
 
     
-      if(duration === 15){
-        cpms = (total - errors)*4;
-      }else if(duration === 30){
-        cpms = (total - errors)*2;
-      }
-      else{
-        cpms = (total - errors);
+      if (duration > 0) {
+        cpms = Math.floor(((total - errors) / duration) * 60);
       }
       // Send results to server here
       sendResultsToServer({
         userId: localStorage.getItem('userId'), 
         typed: totalTyped,
-        accuracy: ((totalTyped - errors) / totalTyped),
+        accuracy: totalTyped > 0 ? ((totalTyped - errors) / totalTyped) : 1,
         cpm: cpms,
         error: errors
       });

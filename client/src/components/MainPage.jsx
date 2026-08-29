@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import GeneratedWords from "./GeneratedWords";
+
 import RestartButton from "./RestartButton";
 import Results from "./Results";
 import UserTypings from "./UserTypings";
@@ -18,13 +18,12 @@ const MainPage = () => {
 
 
   return (
-<div className="grid place-items-center max-h-screen font-mono tracking-wider p-10" style={{ backdropFilter: "blur(3px)" }}>
+<div className="grid place-items-center max-h-screen font-mono tracking-wider p-10" style={{ backdropFilter: "blur(3px)" }} tabIndex={0} aria-label="Typing test area">
       <DurationSelect disabled={state !== "start"} />
       <ModeSelect disabled={state !== "start"} />
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
-        <GeneratedWords key={words} words={words} />
-        <UserTypings className="absolute inset-0" words={words} userInput={typed} />
+        <UserTypings words={words} userInput={typed} />
       </WordsContainer>
       <RestartButton className={"mx-auto mt-10 text-slate-500"} onRestart={() => { restart(); document.activeElement.blur(); }} />
       
@@ -42,7 +41,7 @@ const MainPage = () => {
 };
 
 const WordsContainer = ({ children }) => {
-  return <div className="relative text-3xl max-w-xl leading-relaxed break-all mt-3">{children}</div>;
+  return <div className="relative text-3xl max-w-xl leading-relaxed break-words mt-3">{children}</div>;
 };
 
 const CountdownTimer = ({ timeLeft }) => {

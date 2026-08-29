@@ -13,7 +13,7 @@ const PointCircle = () => {
     useFrame(({ clock }) => {
         if (
             ref.current
-            ?.rotation
+                ?.rotation
         ) {
             ref.current.rotation.z = clock.getElapsedTime() * 0.05;
         }
@@ -119,16 +119,13 @@ const Login = () => {
 
                             <main className="w-full h-screen flex justify-center items-center">
                                 <div
-                                    className="w-full text-white space-y-5 p-4 shadow-xl border rounded-xl"
-                                    style={{
-                                        backdropFilter: "blur(1px)"
-                                    }}>
+                                    className="w-full text-white space-y-6 p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] border border-white/20 bg-white/10 rounded-2xl backdrop-blur-xl transition-all">
                                     <div className="text-center">
                                         <div className="mt-2">
-                                        <div>
-                                        </div>
-                                        <img src="/favicon.png" alt="Typista Logo" className="w-20 h-20 mx-auto" />
-<h1 className="text-white font-bold sm:text-2xl font-mono ">TYPISTA</h1>
+                                            <div>
+                                            </div>
+
+                                            <h1 className="text-white font-bold sm:text-2xl font-mono ">TYPISTA</h1>
                                         </div>
                                     </div>
                                     <form onSubmit={onSubmit} className="space-y-5">
@@ -144,10 +141,8 @@ const Login = () => {
                                                 onChange={(e) => {
                                                     setEmail(e.target.value)
                                                 }}
-                                                className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border shadow-sm rounded-lg transition duration-300"
-                                                style={{
-                                                    backdropFilter: "blur(3px)"
-                                                }} />
+                                                className="w-full mt-2 px-4 py-3 text-white bg-white/5 outline-none border border-white/10 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20 shadow-inner rounded-xl transition-all duration-300 backdrop-blur-md placeholder-white/40"
+                                            />
 
                                         </div>
 
@@ -163,10 +158,8 @@ const Login = () => {
                                                 onChange={(e) => {
                                                     setPassword(e.target.value)
                                                 }}
-                                                className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border shadow-sm rounded-lg transition duration-300"
-                                                style={{
-                                                    backdropFilter: "blur(3px)"
-                                                }} />
+                                                className="w-full mt-2 px-4 py-3 text-white bg-white/5 outline-none border border-white/10 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20 shadow-inner rounded-xl transition-all duration-300 backdrop-blur-md placeholder-white/40"
+                                            />
                                         </div>
 
                                         {errorMessage && (<span className='text-red-600 font-bold'>{errorMessage}</span>)}
@@ -174,10 +167,9 @@ const Login = () => {
                                         <button
                                             type="submit"
                                             disabled={isSigningIn}
-                                            className={`w-full px-4 py-2 font-medium rounded-lg ${isSigningIn
-                                                ? 'bg-gray-300 cursor-not-allowed'
-                                                : 'bg-white text-black border border-white hover:bg-black hover:text-white hover:' +
-                                                'border-white transition duration-300 active:bg-gray-100'}`}>
+                                            className={`w-full px-4 py-3 font-bold text-lg rounded-xl shadow-lg hover:shadow-white/20 ${isSigningIn
+                                                ? 'bg-white/50 cursor-not-allowed text-black/50'
+                                                : 'bg-white text-black hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]'}`}>
                                             {
                                                 isSigningIn
                                                     ? 'Signing In...'
@@ -198,10 +190,9 @@ const Login = () => {
                                         onClick={(e) => {
                                             onGoogleSignIn(e)
                                         }}
-                                        className={`w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium ${isSigningIn
-                                            ? 'cursor-not-allowed'
-                                            : 'bg-white text-black hover:bg-black hover:text-white hover:border-white transit' +
-                                            'ion duration-300 active:bg-gray-100'}`}>
+                                        className={`w-full flex items-center justify-center gap-x-3 py-3 border border-white/20 rounded-xl text-sm font-medium shadow-lg ${isSigningIn
+                                            ? 'cursor-not-allowed bg-white/5 text-white/50'
+                                            : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all duration-300 active:scale-[0.98]'}`}>
                                         <svg
                                             className="w-5 h-5"
                                             viewBox="0 0 48 48"
@@ -236,7 +227,7 @@ const Login = () => {
 
                                     <Link to={'/home'}>
                                         <button
-                                            className={`w-full px-4 py-2 font-medium rounded-lg bg-white text-black border border-white hover:bg-black hover:text-white hover:border-white transition duration-300 active:bg-gray-100 mt-4`}>
+                                            className="w-full px-4 py-3 font-medium rounded-xl bg-transparent text-white/70 hover:text-white border border-transparent hover:border-white/10 hover:bg-white/5 transition-all duration-300 mt-4">
                                             Try without signing in
                                         </button>
                                     </Link>
