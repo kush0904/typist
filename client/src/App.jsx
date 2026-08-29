@@ -131,8 +131,14 @@ const ContactContainer = () => {
 }
 
 
+import { Helmet } from 'react-helmet-async';
+
 const Home = () => (
   <>
+    <Helmet>
+      <title>Typista | Real-Time Multiplayer Typing Test</title>
+      <meta name="description" content="Test your typing speed (WPM) on Typista. Practice solo or race against friends in real-time multiplayer with beautiful 3D backgrounds." />
+    </Helmet>
     <DurationProvider>
       <ModeProvider>
         <BackGround />

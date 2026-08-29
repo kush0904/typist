@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Countdown from './Countdown';
 import StartBtn from './StartBtn';
 import socket from '../socketConfig';
@@ -44,6 +45,10 @@ const TypeRacer = () => {
 
     return (
         <AuroraBackground>
+            <Helmet>
+                <title>Live Typing Race | Typista</title>
+                <meta name="description" content="Join a live real-time typing race on Typista. Compete against your friends to see who can type the fastest!" />
+            </Helmet>
             <button
                 onClick={() => {
                     socket.emit('leave-room', _id);
