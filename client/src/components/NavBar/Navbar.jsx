@@ -30,7 +30,7 @@ const NavBar = () => {
     const dropdownTimeoutRef = useRef(null);
     const { userLoggedIn } = useAuth();
     const userId = localStorage.getItem("userId");
-    
+
     const gameState = useGameStore((state) => state.gameState);
     const setGameState = useGameStore((state) => state.setGameState);
 
@@ -51,54 +51,65 @@ const NavBar = () => {
 
     return (
         <>
-        <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 md:px-8 h-20 text-white z-[100] bg-black/30 backdrop-blur-xl border-b border-white/5 shadow-2xl">
+            <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 md:px-8 h-20 text-white z-[100] bg-black/30 backdrop-blur-xl border-b border-white/5 shadow-2xl">
 
-            <div className="flex items-center shrink-0">
-                <Link to="/" onClick={handleNavClick}>
-                    <motion.div whileHover={{ scale: 1.02 }} className="text-2xl md:text-3xl tracking-widest font-bold">
-                        <Heading />
-                    </motion.div>
-                </Link>
-            </div>
-
-            <div className='flex items-center gap-1 md:gap-2'>
-                <NavItem to="/" icon={FiHome} label="Home" isActive={location.pathname === '/' || location.pathname === '/home'} onClick={handleNavClick} />
-                <NavItem to="/game" icon={FiUsers} label="Multiplayer" isActive={location.pathname.startsWith('/game')} onClick={handleNavClick} />
-                <NavItem to="/keys" icon={FiTerminal} label="Practice" isActive={location.pathname === '/keys'} onClick={handleNavClick} />
-                <NavItem to="/fallingwords" icon={FiPlay} label="Minigame" isActive={location.pathname === '/fallingwords'} onClick={handleNavClick} />
-
-                {userId && (
-                    <NavItem
-                        to={`/results/${userId}`}
-                        icon={FiBarChart2}
-                        label="Stats"
-                        isActive={location.pathname === `/results/${userId}`}
-                        onClick={handleNavClick}
-                    />
-                )}
-
-                <div className="relative ml-2">
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleUserClick}
-                        className={`flex items-center justify-center p-2.5 rounded-full transition-all ${showDropdown || location.pathname === '/detailed'
-                            ? 'bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] border border-indigo-500'
-                            : 'bg-zinc-800/80 text-gray-300 hover:bg-zinc-700 border border-zinc-700/50 hover:text-white'
-                            }`}
-                    >
-                        <FiUser className="text-xl" />
-                    </motion.button>
-
+                <div className="flex items-center shrink-0">
+                    <Link to="/" onClick={handleNavClick}>
+                        <motion.div whileHover={{ scale: 1.02 }} className="text-2xl md:text-3xl tracking-widest font-bold">
+                            <Heading />
+                        </motion.div>
+                    </Link>
                 </div>
-            </div>
-        </nav>
-        {showDropdown && (
-            <DetailedAccounts 
-                userLoggedIn={userLoggedIn} 
-                onClose={() => setShowDropdown(false)} 
-            />
-        )}
+
+                <div className='flex items-center gap-1 md:gap-2'>
+                    <NavItem to="/" icon={FiHome} label="Home" isActive={location.pathname === '/' || location.pathname === '/home'} onClick={handleNavClick} />
+                    <NavItem to="/game" icon={FiUsers} label="Multiplayer" isActive={location.pathname.startsWith('/game')} onClick={handleNavClick} />
+                    <NavItem to="/keys" icon={FiTerminal} label="Practice" isActive={location.pathname === '/keys'} onClick={handleNavClick} />
+                    <NavItem to="/fallingwords" icon={FiPlay} label="Minigame" isActive={location.pathname === '/fallingwords'} onClick={handleNavClick} />
+
+                    {userId && (
+                        <NavItem
+                            to={`/results/${userId}`}
+                            icon={FiBarChart2}
+                            label="Stats"
+                            isActive={location.pathname === `/results/${userId}`}
+                            onClick={handleNavClick}
+                        />
+                    )}
+
+                    <div className="relative ml-2">
+                        {userLoggedIn ? (
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleUserClick}
+                                className={`flex items-center justify-center p-2.5 rounded-full transition-all ${showDropdown || location.pathname === '/detailed'
+                                    ? 'bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] border border-indigo-500'
+                                    : 'bg-zinc-800/80 text-gray-300 hover:bg-zinc-700 border border-zinc-700/50 hover:text-white'
+                                    }`}
+                            >
+                                <FiUser className="text-xl" />
+                            </motion.button>
+                        ) : (
+                            <Link to="/login" onClick={handleNavClick}>
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="flex items-center gap-2 bg-indigo-600/90 hover:bg-indigo-500 text-white text-sm font-bold px-5 py-2 rounded-full transition-all border border-indigo-500/50 shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_20px_rgba(79,70,229,0.5)] tracking-wide"
+                                >
+                                    Login
+                                </motion.button>
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </nav>
+            {showDropdown && (
+                <DetailedAccounts
+                    userLoggedIn={userLoggedIn}
+                    onClose={() => setShowDropdown(false)}
+                />
+            )}
         </>
     );
 };
